@@ -168,11 +168,12 @@ namespace XESmartTarget
                     client.DefaultRequestHeaders.Add("User-Agent", $"XESmartTarget/{version} (XESmartTarget; copyright spaghettidba)");
                     try
                     {
-                        if (string.Equals(authScheme, "ApiKey", StringComparison.OrdinalIgnoreCase))
+                        if (string.Equals(authScheme, "ApiKey", StringComparison.OrdinalIgnoreCase) || (credPassword != null && credPassword.StartsWith("qmk_", StringComparison.OrdinalIgnoreCase)))
                         {
                             // API key auth: send as X-Api-Key header; username stays in URL
-                            client.DefaultRequestHeaders.Add("X-Api-Key", credPassword ?? string.Empty);
+                            client.DefaultRequestHeaders.Add("X-Api-Key", credPassword);
                         }
+                        
                         else if (!String.IsNullOrEmpty(outUri!.UserInfo))
                         {
                             var byteArray = Encoding.ASCII.GetBytes(outUri.UserInfo);
